@@ -720,6 +720,398 @@
 .final-projects .live-project.complete{border-color:rgba(47,149,111,.24)}
 .final-projects .live-project.not-started{border-color:rgba(216,163,61,.28)}
 .sheet-status-inline{font-size:7px;color:rgba(255,255,255,.34)}
+
+/* V19 — Final countdown redesign: timing left, Tamkeen message right */
+.final-screen{
+  background:radial-gradient(circle at 88% 12%,rgba(216,163,61,.055),transparent 24%),
+             radial-gradient(circle at 18% 78%,rgba(81,37,102,.055),transparent 26%),
+             #f5f2ed;
+  color:var(--ink);
+}
+.final-screen .brand h1{color:#17141a}
+.final-screen .brand p{color:#958d95}
+.final-screen .live{color:#776b7d}
+.final-wrap{
+  height:calc(100% - 78px);
+  max-width:1420px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  grid-template-rows:minmax(0,1fr) 74px;
+  grid-template-areas:
+    "count message"
+    "focus focus";
+  gap:18px;
+  align-items:stretch;
+  padding:8px 0 4px;
+}
+.final-count,.motivation-panel{
+  min-width:0;
+  height:100%;
+  min-height:0;
+  border-radius:30px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 18px 50px rgba(33,29,35,.06);
+}
+.final-count{
+  grid-area:count;
+  background:#24152d;
+  border:1px solid rgba(81,37,102,.35);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+  padding:34px 34px;
+  color:#fff;
+}
+.final-count:before,.final-count:after{
+  content:"";position:absolute;border-radius:50%;pointer-events:none;
+}
+.final-count:before{width:560px;height:560px;border:1px solid rgba(255,255,255,.065);left:50%;top:50%;transform:translate(-50%,-50%)}
+.final-count:after{width:390px;height:390px;border:1px dashed rgba(216,163,61,.17);left:50%;top:50%;transform:translate(-50%,-50%)}
+.final-count>*{position:relative;z-index:2}
+.final-count .count-kicker{font-size:9px;color:#d8a33d;letter-spacing:3px;font-weight:800;direction:ltr}
+.final-count h2{font-size:34px;line-height:1.25;margin:12px 0 5px;color:#fff}
+.final-count>p{font-size:9px;color:rgba(255,255,255,.52);margin:0 0 28px}
+.final-count .timer{gap:9px;direction:rtl}
+.final-count .tbox{width:94px;padding:14px 4px;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:#24152d}
+.final-count .tnum{font-size:48px;font-weight:800;line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+.final-count .tlabel{font-size:8px;color:rgba(255,255,255,.48);margin-top:7px}
+.final-count .colon{font-size:28px;color:rgba(255,255,255,.24)}
+.final-count .count-foot{font-size:8px;color:rgba(255,255,255,.35);margin-top:24px}
+.motivation-panel{
+  grid-area:message;
+  padding:42px 48px;
+  background:#fffdfa;
+  border:1px solid #e3ddd5;
+  text-align:right;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  color:var(--ink);
+}
+.motivation-panel:before,.motivation-panel:after{content:"";position:absolute;border:1px solid rgba(81,37,102,.08);border-radius:50%;pointer-events:none}
+.motivation-panel:before{width:330px;height:330px;left:-190px;bottom:-180px}
+.motivation-panel:after{width:220px;height:220px;right:-110px;top:-110px}
+.motivation-kicker{font-size:9px;letter-spacing:2.6px;color:#8a5a1f;font-weight:800}
+.motivation-index{position:absolute;top:22px;left:24px;color:#c9c1c8;font-size:10px;direction:ltr}
+.motivation-index span:first-child{color:#512566;font-size:20px;font-weight:800}
+.motivation-mark{font-family:Georgia,serif;color:#512566;font-size:68px;line-height:.6;margin:18px 0 10px;opacity:.12}
+.motivation-panel p{font-size:27px;line-height:1.8;color:#211d23;max-width:650px;margin:0;min-height:118px;transition:opacity .35s ease,transform .35s ease}
+.motivation-panel p.swap{opacity:0;transform:translateY(9px)}
+.motivation-bottom{margin-top:24px;display:flex;align-items:center;justify-content:space-between;color:#9b939a;font-size:8px}
+.motivation-dots{display:flex;gap:5px}.motivation-dots i{width:18px;height:3px;border-radius:9px;background:#e7e0d9}.motivation-dots i:first-child{background:#512566}
+.final-focus-strip{
+  grid-area:focus;
+  border:1px solid #e1dcd5;
+  border-radius:18px;
+  background:rgba(255,255,255,.76);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 160px;
+  align-items:center;
+  gap:22px;
+  padding:10px 18px;
+  box-shadow:0 10px 28px rgba(33,29,35,.035);
+}
+.focus-project{direction:rtl;text-align:right;min-width:0}
+.focus-project small{display:block;font-size:7px;letter-spacing:2px;color:#a28e72;font-weight:800;direction:ltr;text-align:right}
+.focus-project strong{display:block;font-size:13px;color:#211d23;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.focus-progress{direction:ltr;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px}
+.focus-progress b{font-size:26px;color:#512566;font-variant-numeric:tabular-nums}
+.focus-rail{height:7px;background:#e8e1da;border-radius:20px;overflow:hidden}
+.focus-rail i{display:block;width:0;height:100%;border-radius:20px;background:#8b5fa0;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+@media(max-width:1050px){
+  .final-wrap{grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr) 68px;gap:14px}
+  .motivation-panel{padding:32px 34px}.motivation-panel p{font-size:22px}.final-count .tbox{width:82px}.final-count .tnum{font-size:41px}
+}
+@media(max-width:850px){
+  .final-wrap{grid-template-columns:1fr;grid-template-rows:360px 360px 68px;grid-template-areas:"count" "message" "focus";overflow:auto;padding:10px 0 55px}
+  .final-count,.motivation-panel{height:360px}
+  .final-focus-strip{grid-template-columns:1fr;gap:5px;height:68px}.focus-progress{grid-template-columns:auto 1fr}.final-count .timer{gap:4px}.final-count .tbox{width:68px}.final-count .tnum{font-size:34px}
+}
+
+/* V20 — Executive visual polish: larger dashboard KPIs + animated countdown + rotating focus project */
+.home-strip{grid-template-columns:repeat(4,.86fr) 1.9fr;gap:12px}
+.home-kpi,.home-next{min-height:82px;border-radius:18px;padding:13px 16px;box-shadow:0 10px 26px rgba(33,29,35,.045)}
+.home-kpi{grid-template-columns:1fr auto;grid-template-rows:auto auto}
+.home-kpi span{font-size:9px;letter-spacing:.15px}
+.home-kpi small{font-size:8px}
+.home-kpi b{font-size:34px;line-height:1;letter-spacing:-1px}
+.home-kpi:nth-child(2) b{font-size:38px}
+.home-next{column-gap:12px}
+.home-next small{font-size:8px}
+.home-next strong{font-size:11px}
+.home-next span{font-size:8px}
+
+.final-wrap{max-width:1450px;grid-template-columns:1.02fr .98fr;grid-template-rows:minmax(0,1fr) 74px;gap:16px;padding:6px 0 4px}
+.final-count{background:#24152d;border:1px solid rgba(216,163,61,.18);box-shadow:0 24px 65px rgba(36,21,45,.16);isolation:isolate}
+.final-count:before{width:620px;height:620px;border:1px solid rgba(255,255,255,.065);animation:countOrbitSlow 22s linear infinite}
+.final-count:after{width:430px;height:430px;border:1px dashed rgba(216,163,61,.24);animation:countOrbitSlowReverse 14s linear infinite}
+.final-count .timer{gap:10px;position:relative;z-index:6}
+.final-count .tbox{width:98px;min-height:108px;padding:15px 5px;background:#2d1937;border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 10px 25px rgba(0,0,0,.12);transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
+.final-count .tbox:hover{transform:translateY(-4px)}
+.final-count .tbox.day-card{background:linear-gradient(145deg,#5b2d71,#3b1d49);border-color:rgba(216,163,61,.7);box-shadow:0 0 0 1px rgba(216,163,61,.12),0 0 28px rgba(216,163,61,.16),inset 0 1px 0 rgba(255,255,255,.08)}
+.final-count .tbox.day-card .tlabel{color:#f0c76f;opacity:.9}
+.final-count .tbox.day-card .tnum{color:#fff7dc;text-shadow:0 0 18px rgba(216,163,61,.22)}
+.final-count .tbox .tlabel{letter-spacing:.2px}
+.final-count .count-foot{position:relative;z-index:6}
+.count-motion{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.count-motion .ring{position:absolute;border:1px solid transparent;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+.count-motion .rA{width:270px;height:270px;border-top-color:rgba(216,163,61,.44);border-right-color:rgba(81,37,102,.35);animation:ringSweepA 8s linear infinite}
+.count-motion .rB{width:345px;height:345px;border-left-color:rgba(255,255,255,.16);border-bottom-color:rgba(216,163,61,.2);animation:ringSweepB 12s linear infinite reverse}
+.count-motion .rC{width:475px;height:475px;border-top-color:rgba(255,255,255,.09);border-right-color:rgba(216,163,61,.11);animation:ringSweepC 18s linear infinite}
+.count-motion .dot{position:absolute;width:8px;height:8px;border-radius:50%;left:50%;top:50%;box-shadow:0 0 0 8px rgba(216,163,61,.055),0 0 16px rgba(216,163,61,.25)}
+.count-motion .dot.a{background:#d8a33d;animation:dotPathA 7s linear infinite}
+.count-motion .dot.b{background:#43a47e;box-shadow:0 0 0 8px rgba(67,164,126,.055),0 0 16px rgba(67,164,126,.2);animation:dotPathB 10s linear infinite reverse}
+.final-count .count-sheen{position:absolute;left:-22%;top:0;width:28%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);transform:skewX(-16deg);animation:countSheen 6.5s ease-in-out infinite;pointer-events:none;z-index:2}
+@keyframes countOrbitSlow{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes countOrbitSlowReverse{to{transform:translate(-50%,-50%) rotate(-360deg)}}
+@keyframes ringSweepA{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes ringSweepB{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes ringSweepC{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes countSheen{0%,50%{left:-30%;opacity:0}64%{opacity:.8}82%,100%{left:120%;opacity:0}}
+@keyframes dotPathA{from{transform:rotate(0deg) translateX(210px)}to{transform:rotate(360deg) translateX(210px)}}
+@keyframes dotPathB{from{transform:rotate(0deg) translateX(165px)}to{transform:rotate(360deg) translateX(165px)}}
+
+.final-focus-strip{grid-template-columns:minmax(0,1fr) 215px;min-height:74px;padding:10px 18px 10px 22px;background:rgba(255,255,255,.9);border-color:#ddd6cf}
+.focus-project{position:relative;overflow:hidden}
+.focus-project strong{font-size:15px;transition:opacity .35s ease,transform .35s ease}
+.focus-project small{font-size:7px}
+.focus-project.swap strong,.focus-progress.swap{opacity:0;transform:translateY(8px)}
+.focus-progress{transition:opacity .35s ease,transform .35s ease}
+.focus-progress b{font-size:29px}
+.focus-rail{height:8px}
+.focus-rail i{background:linear-gradient(90deg,#512566,#8b5fa0);box-shadow:0 0 12px rgba(81,37,102,.16)}
+.final-focus-strip:after{content:"";position:absolute;width:70px;height:70px;border:1px solid rgba(81,37,102,.07);border-radius:50%;left:-36px;bottom:-45px;pointer-events:none}
+
+@media(max-width:1050px){
+ .home-strip{grid-template-columns:repeat(4,.9fr) 1.6fr;gap:9px}.home-kpi,.home-next{min-height:76px;padding:11px 13px}.home-kpi b{font-size:29px}.home-kpi:nth-child(2) b{font-size:33px}
+ .final-count .tbox{width:84px;min-height:98px}.final-count .tnum{font-size:42px}.final-focus-strip{grid-template-columns:minmax(0,1fr) 180px}
+}
+
+
+/* V21 — enlarge orbit statistic cards while preserving the composition */
+.orbit-stage .orbit-tag{
+  min-width:200px;
+  padding:18px 22px;
+  border-radius:18px;
+  border-width:1.5px;
+  box-shadow:0 18px 42px rgba(33,29,35,.11),0 0 0 1px rgba(81,37,102,.035);
+}
+.orbit-stage .orbit-tag b{
+  font-size:42px;
+  line-height:1;
+  letter-spacing:-1px;
+}
+.orbit-stage .orbit-tag span{
+  font-size:11px;
+  margin-top:7px;
+  font-weight:800;
+}
+.orbit-stage .tag-a{
+  top:34px;
+  left:1%;
+}
+.orbit-stage .tag-b{
+  right:-1%;
+  top:39%;
+}
+.orbit-stage .tag-c{
+  bottom:34px;
+  left:6%;
+}
+@media(max-width:1100px){
+  .orbit-stage .orbit-tag{min-width:175px;padding:15px 18px}
+  .orbit-stage .orbit-tag b{font-size:36px}
+  .orbit-stage .orbit-tag span{font-size:10px}
+}
+@media(max-width:900px){
+  .orbit-stage .orbit-tag{min-width:145px;padding:12px 15px}
+  .orbit-stage .orbit-tag b{font-size:31px}
+  .orbit-stage .orbit-tag span{font-size:9px}
+}
+
+
+/* V22 — enlarge the central KPI nucleus + orbit system only */
+.orbit-stage .orbit.o1{
+  width:780px;
+  height:780px;
+  margin:-390px 0 0 -390px;
+}
+.orbit-stage .orbit.o2{
+  width:580px;
+  height:580px;
+  margin:-290px 0 0 -290px;
+}
+.orbit-stage .orbit.o3{
+  width:370px;
+  height:370px;
+  margin:-185px 0 0 -185px;
+}
+
+.orbit-stage .command-core{
+  width:320px;
+  height:320px;
+  margin:-160px 0 0 -160px;
+  box-shadow:
+    0 30px 90px rgba(81,37,102,.30),
+    0 0 0 12px rgba(81,37,102,.035),
+    0 0 60px rgba(81,37,102,.10);
+}
+.orbit-stage .command-core .core-label{
+  font-size:11px;
+}
+.orbit-stage .command-core .core-number{
+  font-size:82px;
+  letter-spacing:-2px;
+  margin:6px 0;
+}
+.orbit-stage .command-core .core-number span{
+  font-size:38px;
+}
+.orbit-stage .command-core .core-sub{
+  font-size:10px;
+}
+
+.orbit-stage .orbit-stage:after{width:430px;height:430px}
+
+.orbit-stage .orbit-dot{
+  width:13px;
+  height:13px;
+  margin:-6.5px 0 0 -6.5px;
+}
+.orbit-stage .od1{
+  animation-name:exactOrbit390;
+}
+.orbit-stage .od2{
+  animation-name:exactOrbit290;
+}
+.orbit-stage .od3{
+  animation-name:exactOrbit185;
+}
+
+@keyframes exactOrbit390{
+  from{transform:rotate(0deg) translateX(390px)}
+  to{transform:rotate(360deg) translateX(390px)}
+}
+@keyframes exactOrbit290{
+  from{transform:rotate(0deg) translateX(290px)}
+  to{transform:rotate(360deg) translateX(290px)}
+}
+@keyframes exactOrbit185{
+  from{transform:rotate(0deg) translateX(185px)}
+  to{transform:rotate(360deg) translateX(185px)}
+}
+
+@media(max-width:1100px){
+  .orbit-stage .orbit.o1{width:680px;height:680px;margin:-340px 0 0 -340px}
+  .orbit-stage .orbit.o2{width:510px;height:510px;margin:-255px 0 0 -255px}
+  .orbit-stage .orbit.o3{width:330px;height:330px;margin:-165px 0 0 -165px}
+  .orbit-stage .command-core{width:280px;height:280px;margin:-140px 0 0 -140px}
+  .orbit-stage .command-core .core-number{font-size:72px}
+  .orbit-stage .command-core .core-number span{font-size:34px}
+}
+
+@media(max-width:900px){
+  .orbit-stage .orbit.o1{width:560px;height:560px;margin:-280px 0 0 -280px}
+  .orbit-stage .orbit.o2{width:420px;height:420px;margin:-210px 0 0 -210px}
+  .orbit-stage .orbit.o3{width:280px;height:280px;margin:-140px 0 0 -140px}
+  .orbit-stage .command-core{width:235px;height:235px;margin:-117.5px 0 0 -117.5px}
+  .orbit-stage .command-core .core-number{font-size:61px}
+  .orbit-stage .command-core .core-number span{font-size:29px}
+  .orbit-stage .command-core .core-label{font-size:9px}
+  .orbit-stage .command-core .core-sub{font-size:8px}
+}
+
+
+
+/* V23 — restore the 3 orbit dots and lock each dot precisely to its ring */
+.orbit-stage .orbit-dot{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  width:14px !important;
+  height:14px !important;
+  margin:-7px 0 0 -7px !important;
+  offset-path:none !important;
+  offset-distance:0 !important;
+  transform-origin:50% 50% !important;
+  z-index:7 !important;
+  will-change:transform;
+  display:block !important;
+}
+
+/* Three dots = three different rings, with spaced starting angles.
+   They stay locked to the exact circumference of their respective rings. */
+.orbit-stage .od1{
+  background:var(--gold) !important;
+  box-shadow:0 0 0 7px rgba(216,163,61,.10),0 0 22px rgba(216,163,61,.24) !important;
+  animation:orbitDotOuterV23 10s linear infinite !important;
+}
+.orbit-stage .od2{
+  background:var(--g) !important;
+  box-shadow:0 0 0 7px rgba(47,149,111,.10),0 0 22px rgba(47,149,111,.22) !important;
+  animation:orbitDotMiddleV23 8s linear infinite reverse !important;
+}
+.orbit-stage .od3{
+  background:var(--p) !important;
+  box-shadow:0 0 0 7px rgba(81,37,102,.10),0 0 22px rgba(81,37,102,.22) !important;
+  animation:orbitDotInnerV23 6.5s linear infinite !important;
+}
+
+@keyframes orbitDotOuterV23{
+  from{transform:rotate(28deg) translateX(390px)}
+  to{transform:rotate(388deg) translateX(390px)}
+}
+@keyframes orbitDotMiddleV23{
+  from{transform:rotate(156deg) translateX(290px)}
+  to{transform:rotate(-204deg) translateX(290px)}
+}
+@keyframes orbitDotInnerV23{
+  from{transform:rotate(278deg) translateX(185px)}
+  to{transform:rotate(638deg) translateX(185px)}
+}
+
+/* Keep the core visually dominant while ensuring all three markers remain visible. */
+.orbit-stage .command-core{z-index:8 !important}
+
+/* Preserve responsive proportions without changing the data/Google Sheets logic. */
+@media(max-width:1100px){
+  .orbit-stage .od1{animation-name:orbitDotOuterV23Small !important}
+  .orbit-stage .od2{animation-name:orbitDotMiddleV23Small !important}
+  .orbit-stage .od3{animation-name:orbitDotInnerV23Small !important}
+}
+@keyframes orbitDotOuterV23Small{
+  from{transform:rotate(28deg) translateX(340px)}
+  to{transform:rotate(388deg) translateX(340px)}
+}
+@keyframes orbitDotMiddleV23Small{
+  from{transform:rotate(156deg) translateX(255px)}
+  to{transform:rotate(-204deg) translateX(255px)}
+}
+@keyframes orbitDotInnerV23Small{
+  from{transform:rotate(278deg) translateX(165px)}
+  to{transform:rotate(638deg) translateX(165px)}
+}
+@media(max-width:900px){
+  .orbit-stage .od1{animation-name:orbitDotOuterV23Tiny !important}
+  .orbit-stage .od2{animation-name:orbitDotMiddleV23Tiny !important}
+  .orbit-stage .od3{animation-name:orbitDotInnerV23Tiny !important}
+}
+@keyframes orbitDotOuterV23Tiny{
+  from{transform:rotate(28deg) translateX(280px)}
+  to{transform:rotate(388deg) translateX(280px)}
+}
+@keyframes orbitDotMiddleV23Tiny{
+  from{transform:rotate(156deg) translateX(210px)}
+  to{transform:rotate(-204deg) translateX(210px)}
+}
+@keyframes orbitDotInnerV23Tiny{
+  from{transform:rotate(278deg) translateX(140px)}
+  to{transform:rotate(638deg) translateX(140px)}
+}
+
 </style>
 </head>
 <body>
@@ -766,7 +1158,43 @@
 <section class="screen" id="s4"><div class="top"><div class="brand"><h1>المشاريع</h1><p>PROJECT COMMAND • 13</p></div><div class="live"><i></i><span class="sync-label">آخر مزامنة — جارٍ الاتصال</span></div></div><div class="page-head"><div></div><p>13 / 13</p></div><div class="project-grid" id="p4"></div></section>
 <section class="screen dark final-screen" id="s5">
 <div class="top"><div class="brand"><h1>الوقت المتبقي</h1><p>FINAL COUNTDOWN • TAMKEEN</p></div><div class="live"><i></i><span class="sync-label">آخر مزامنة — جارٍ الاتصال</span></div></div>
-<div class="final-wrap"><div class="motivation-panel"><div class="motivation-kicker">رسالة تمكين</div><div class="motivation-index"><span id="mIndex">01</span><span>/14</span></div><div class="motivation-mark">“</div><p id="motivationText">كل خطوة ننجزها اليوم تقرّبنا من تجربة ضيافة أكثر ذكاءً.</p><div class="motivation-bottom"><span id="motivationLabel">رسالة 01</span><span class="motivation-dots"><i></i><i></i><i></i></span></div></div><div class="count-panel final-count"><div class="count-kicker">TAMKEEN 2026</div><h2>الوقت المتبقي</h2><p>حتى 5 سبتمبر 2026 — الساعة 5:00 مساءً</p><div class="timer"><div class="tbox"><div class="tnum" id="d">00</div><div class="tlabel">يوم</div></div><div class="colon">:</div><div class="tbox"><div class="tnum" id="h">00</div><div class="tlabel">ساعة</div></div><div class="colon">:</div><div class="tbox"><div class="tnum" id="m">00</div><div class="tlabel">دقيقة</div></div><div class="colon">:</div><div class="tbox"><div class="tnum" id="sec">00</div><div class="tlabel">ثانية</div></div></div><div class="count-foot">نحو تجربة ضيافة أكثر ذكاءً</div></div><div class="live-projects final-projects"><div class="live-projects-head"><b>PROJECT PORTFOLIO</b><span class="sheet-status-inline">نسب الإنجاز الحالية</span></div><div class="live-project-grid" id="liveProjectGrid"></div></div></div>
+<div class="final-wrap">
+  <div class="final-count" aria-label="الوقت المتبقي">
+    <div class="count-motion"><span class="ring rA"></span><span class="ring rB"></span><span class="ring rC"></span><span class="dot a"></span><span class="dot b"></span></div><div class="count-sheen"></div>
+    <div class="count-kicker">TAMKEEN / 2026</div>
+    <h2>الوقت المتبقي</h2>
+    <p>حتى 5 سبتمبر 2026 — الساعة 5:00 مساءً</p>
+    <div class="timer">
+      <div class="tbox day-card"><div class="tnum" id="d">00</div><div class="tlabel">يوم</div></div>
+      <div class="colon">:</div>
+      <div class="tbox"><div class="tnum" id="h">00</div><div class="tlabel">ساعة</div></div>
+      <div class="colon">:</div>
+      <div class="tbox"><div class="tnum" id="m">00</div><div class="tlabel">دقيقة</div></div>
+      <div class="colon">:</div>
+      <div class="tbox"><div class="tnum" id="sec">00</div><div class="tlabel">ثانية</div></div>
+    </div>
+    <div class="count-foot">نحو تجربة ضيافة أكثر ذكاءً</div>
+  </div>
+
+  <div class="motivation-panel">
+    <div class="motivation-kicker">رسالة تمكين</div>
+    <div class="motivation-index"><span id="mIndex">01</span><span>/14</span></div>
+    <div class="motivation-mark">“</div>
+    <p id="motivationText">كل خطوة ننجزها اليوم تقرّبنا من تجربة ضيافة أكثر ذكاءً.</p>
+    <div class="motivation-bottom"><span id="motivationLabel">رسالة 01</span><span class="motivation-dots"><i></i><i></i><i></i></span></div>
+  </div>
+
+  <div class="final-focus-strip">
+    <div class="focus-project">
+      <small>PROJECT IN FOCUS</small>
+      <strong id="finalProjectName">متابعة جميع مسارات تمكين</strong>
+    </div>
+    <div class="focus-progress">
+      <b id="finalPct">0%</b>
+      <div class="focus-rail"><i id="finalFocusProgress"></i></div>
+    </div>
+  </div>
+</div>
 <div class="sync-strip"><span class="sync-dot"></span><span id="sheetStatus">آخر مزامنة — جارٍ الاتصال</span></div>
 </section>
 <div class="dots" id="dots"></div></div>
@@ -792,7 +1220,7 @@ let countdownEnd=null;
 const stageNames=["Stage 1","Stage 2","Stage 3","Stage 4","Stage 5"];
 const screens=[...document.querySelectorAll(".screen")],dots=document.getElementById("dots");
 let current=0,updateIndex=0,loopTimer=null,countdownTimer=null,refreshTimer=null;
-const durations=[23000,19000,19000,19000,19000,48000];
+const durations=[23000,19000,19000,19000,19000,54000];
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
 function toNum(v){const n=parseFloat(String(v??"").replace(/[^0-9.-]/g,""));return Number.isFinite(n)?Math.max(0,Math.min(100,n)):0;}
@@ -806,6 +1234,27 @@ function parseDate(v){
 }
 function formatSyncTime(){return new Intl.DateTimeFormat("ar-SA",{hour:"2-digit",minute:"2-digit",hour12:true}).format(new Date());}
 function setSheetStatus(ok,msg){const label=`آخر مزامنة — ${formatSyncTime()}`;document.querySelectorAll(".sync-label").forEach(el=>el.textContent=label);const el=document.getElementById("sheetStatus");if(el)el.textContent=ok?"تمت مزامنة بيانات المشاريع":"تعذر التحديث — آخر بيانات محفوظة";}
+function mapProject(r){
+  if(r && (r["Project ID"]!==undefined || r["Project Name"]!==undefined)){
+    const stages=[1,2,3,4,5].map(i=>norm(r["Stage "+i]));
+    const pct=toNum(r["Progress %"]);
+    return {
+      id:norm(r["Project ID"])||"--", name:norm(r["Project Name"])||"مشروع بدون اسم", team:norm(r["Team / Department"]),
+      status:norm(r["Status"])||(pct===0?"لم يبدأ":pct===100?"مكتمل":"قيد التنفيذ"), pct,
+      delivery:norm(r["Delivery Date"]), start:norm(r["Start Date"]), priority:norm(r["Priority"]),
+      note:norm(r["Update Text"])||norm(r["Current Stage"])||"—", current:norm(r["Current Stage"]), stages
+    };
+  }
+  const pct=toNum(r?.pct);
+  const mappedStages=Array.isArray(r?.stages)?r.stages.map(x=>norm(x?.state||x?.status||x)):[];
+  while(mappedStages.length<5)mappedStages.push("متبقي");
+  return {
+    id:norm(r?.n||r?.id)||"--", name:norm(r?.name)||"مشروع بدون اسم", team:norm(r?.team),
+    status:norm(r?.status)||(pct===0?"لم يبدأ":pct===100?"مكتمل":"قيد التنفيذ"), pct,
+    delivery:norm(r?.date||r?.delivery), start:norm(r?.start||r?.startDate), priority:norm(r?.priority),
+    note:norm(r?.note||r?.updateText||r?.current||r?.currentStage)||"—", current:norm(r?.current||r?.currentStage), stages:mappedStages.slice(0,5)
+  };
+}
 function normalizeUpdate(r){
   if(r && (r.title!==undefined || r.text!==undefined || r.newv!==undefined)) return {icon:norm(r.icon)||"↗",title:norm(r.title)||"تحديث",text:norm(r.text)||"",old:norm(r.old),newv:norm(r.newv),time:norm(r.time)||"اليوم"};
   return {icon:norm(r["Update Type"])==="Completed"?"✓":"↗",title:norm(r["Project Name"])||norm(r["Update Title"])||"تحديث",text:norm(r["Update Text"])||norm(r["Update Title"])||"",old:norm(r["Old Value"]),newv:norm(r["New Value"]),time:norm(r["Update Date"])||"اليوم"};
@@ -828,7 +1277,33 @@ function htmlDecode(s){
   const t=document.createElement("textarea");t.innerHTML=s;return t.value;
 }
 function cleanText(s){return htmlDecode(String(s).replace(/<script[\s\S]*?<\/script>/gi," ").replace(/<style[\s\S]*?<\/style>/gi," ").replace(/<[^>]+>/g," ")).replace(/\s+/g," ").trim();}
-async function fetchResource(url,{allowHtml=false}={}){const attempts=[{kind:"DIRECT",url},{kind:"CORS FALLBACK",url:"https://api.allorigins.win/raw?url="+encodeURIComponent(url)}];let lastErr=null;for(const a of attempts){const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),4500);try{const res=await fetch(a.url,{cache:"no-store",redirect:"follow",signal:controller.signal});if(!res.ok)throw new Error(`${a.kind} HTTP ${res.status}`);const text=await res.text();if(!text)throw new Error(`${a.kind} empty response`);if(!allowHtml && /^\s*<(?:!doctype|html|head|body)\b/i.test(text))throw new Error(`${a.kind} returned HTML`);return {text,source:a.kind};}catch(err){lastErr=new Error(`${a.kind} ${err?.name==="AbortError"?"timed out":err?.message||err}`);}finally{clearTimeout(timeout);}}throw lastErr||new Error("All published-sheet requests failed");}
+async function fetchResource(url,{allowHtml=false}={}){
+  const attempts=[
+    {kind:"DIRECT",url},
+    {kind:"PROXY 1 (allorigins)",url:"https://api.allorigins.win/raw?url="+encodeURIComponent(url)},
+    {kind:"PROXY 2 (codetabs)",url:"https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(url)},
+    {kind:"PROXY 3 (corsproxy)",url:"https://corsproxy.io/?url="+encodeURIComponent(url)}
+  ];
+  let lastErr=null;
+  for(const a of attempts){
+    try{
+      const timeoutP=new Promise((_,rej)=>setTimeout(()=>rej(new Error(`${a.kind} timed out (7s)`)),7000));
+      const res=await Promise.race([fetch(a.url,{cache:"no-store",redirect:"follow"}),timeoutP]);
+      if(!res.ok)throw new Error(`${a.kind} HTTP ${res.status}`);
+      const text=await res.text();
+      if(!text)throw new Error(`${a.kind} empty response`);
+      if(!allowHtml && /^\s*<(?:!doctype|html|head|body)\b/i.test(text))throw new Error(`${a.kind} returned HTML`);
+      logSync(`✓ ${a.kind} OK`);
+      return {text,source:a.kind};
+    }catch(err){
+      const msg=`${a.kind}: ${err?.message||err}`;
+      lastErr=new Error(msg);
+      logSync(`✗ ${msg}`);
+    }
+  }
+  throw lastErr||new Error("All published-sheet requests failed");
+}
+function logSync(line){console.log("[sync]",line);}
 
 function parseCsv(text){
   const rows=[];let row=[],cell="",quoted=false;
@@ -891,7 +1366,7 @@ async function fetchGviz(sheet){
   return {rows:gvizRows(parseGViz(r.text)),source:r.source};
 }
 
-async function syncFromPublishedSheets(){if(syncInFlight)return;syncInFlight=true;try{const pub=await fetchResource(PUBLISHED_HTML_URL,{allowHtml:true});const gids=discoverGids(pub.text);const [projectTry,updateTry]=await Promise.allSettled([publishedCsv("Projects",gids.Projects),publishedCsv("Updates",gids.Updates)]);if(projectTry.status!=="fulfilled")throw projectTry.reason;const incoming=(projectTry.value.rows||[]).filter(r=>norm(r["Project ID"])).map(mapProject);if(!incoming.length)throw new Error("Projects sheet returned no rows");let updateRows=updateTry.status==="fulfilled"?updateTry.value.rows||[]:[];if(!updateRows.length){try{updateRows=(await fetchGviz("Updates")).rows||[]}catch{}}const sig=JSON.stringify(incoming.map(p=>[p.id,p.name,p.pct,p.status,p.delivery,p.start,p.note,p.team]));projects=incoming;updates=updateRows.filter(r=>norm(r["Update ID"])||norm(r["Project Name"])||norm(r["Update Title"])).map(normalizeUpdate);if(sig!==lastDataSignature){lastDataSignature=sig;renderAll();}setSheetStatus(true);updateCountdown();}catch(err){console.error("Published Google Sheets sync failed:",err);setSheetStatus(false);renderAll();}finally{syncInFlight=false;}}
+async function syncFromPublishedSheets(){if(syncInFlight)return;syncInFlight=true;try{const pub=await fetchResource(PUBLISHED_HTML_URL,{allowHtml:true});const gids=discoverGids(pub.text);const [projectTry,updateTry]=await Promise.allSettled([publishedCsv("Projects",gids.Projects),publishedCsv("Updates",gids.Updates)]);if(projectTry.status!=="fulfilled")throw projectTry.reason;const incoming=(projectTry.value.rows||[]).filter(r=>norm(r["Project ID"])).map(mapProject);if(!incoming.length)throw new Error("Projects sheet returned no rows");let updateRows=updateTry.status==="fulfilled"?updateTry.value.rows||[]:[];if(!updateRows.length){try{updateRows=(await fetchGviz("Updates")).rows||[]}catch{}}const sig=JSON.stringify(incoming.map(p=>[p.id,p.name,p.pct,p.status,p.delivery,p.start,p.note,p.team]));projects=incoming;updates=updateRows.filter(r=>norm(r["Update ID"])||norm(r["Project Name"])||norm(r["Update Title"])).map(normalizeUpdate);if(sig!==lastDataSignature){lastDataSignature=sig;renderAll();if(current===0)animateHomeNumbers();}setSheetStatus(true);updateCountdown();}catch(err){console.error("Published Google Sheets sync failed:",err);setSheetStatus(false,err?.message||String(err));renderAll();}finally{syncInFlight=false;}}
 
 function animateHomeNumbers(){
   document.querySelectorAll(".home-count").forEach((el,i)=>{
@@ -916,6 +1391,13 @@ function renderHome(){
   const sub=document.querySelector(".core-sub");if(sub)sub.textContent=`${c.total} مشروعًا`;
   const tags=document.querySelectorAll(".orbit-tag b");if(tags.length>=3){tags[0].textContent=String(c.complete).padStart(2,"0");tags[1].textContent=String(projects.filter(p=>p.pct>0&&p.pct<100).length).padStart(2,"0");tags[2].textContent=String(c.attention).padStart(2,"0");}
   const next=document.querySelector(".home-next strong"),nextSub=document.querySelector(".home-next span");if(next){next.textContent="الخطوة التالية";nextSub.textContent="استمرار التنفيذ حتى إغلاق جميع المسارات ذات الأولوية";}
+  const finalPct=document.getElementById("finalPct"),finalBar=document.getElementById("finalFocusProgress"),finalName=document.getElementById("finalProjectName");
+  if(finalPct)finalPct.textContent=`${c.avg}%`;
+  if(finalBar)finalBar.style.width=`${c.avg}%`;
+  if(finalName){
+    const focus=projects.find(p=>toNum(p.pct)>0&&toNum(p.pct)<100)||projects[0];
+    finalName.textContent=focus?.name||"متابعة جميع مسارات تمكين";
+  }
 }
 function card(p){
  const pct=toNum(p.pct),complete=pct===100,notStarted=pct===0;
@@ -953,12 +1435,22 @@ function renderLiveProjects(){
  requestAnimationFrame(()=>grid.querySelectorAll(".live-project").forEach((x,i)=>{const bar=x.querySelector(".lp-bar i");requestAnimationFrame(()=>{bar.style.width=x.dataset.pct+"%"})}));
 }
 function renderAll(){renderHome();renderProjects();renderLiveProjects();}
+
 function animateCards(screen){
+ screen.querySelectorAll(".card").forEach(c=>{c.style.animation="none";void c.offsetWidth;c.style.animation="";});
  screen.querySelectorAll(".card").forEach((c,i)=>{const target=+c.dataset.pct,counter=c.querySelector(".counter"),arc=c.querySelector(".arc"),rail=c.querySelector(".progress-rail i"),numEl=c.querySelector(".num");setTimeout(()=>{if(numEl){const raw=parseInt(numEl.textContent,10)||0,stNum=performance.now();function nf(now){const q=Math.min((now-stNum)/700,1),e=1-Math.pow(1-q,3);numEl.textContent=String(Math.round(raw*e)).padStart(2,"0");if(q<1)requestAnimationFrame(nf)}requestAnimationFrame(nf)}const start=performance.now();function f(now){const q=Math.min((now-start)/2100,1),e=1-Math.pow(1-q,3);counter.textContent=Math.round(target*e)+"%";if(q<1)requestAnimationFrame(f)}requestAnimationFrame(f);setTimeout(()=>{arc.style.strokeDashoffset=408-(408*target/100);rail.style.width=target+"%"},120)},400+i*240)})
 }
 function showMotivation(){const text=document.getElementById("motivationText"),idx=document.getElementById("mIndex"),lab=document.getElementById("motivationLabel");if(!text)return;const next=motivationIndex++%MOTIVATIONS.length;text.classList.add("swap");setTimeout(()=>{text.textContent=MOTIVATIONS[next];idx.textContent=String(next+1).padStart(2,"0");lab.textContent=`رسالة ${String(next+1).padStart(2,"0")}`;text.classList.remove("swap")},280);}
 function scheduleMotivation(){clearTimeout(motivationTimer);if(current!==5)return;motivationTimer=setTimeout(()=>{showMotivation();scheduleMotivation()},6000);}
-function show(i){current=(i+screens.length)%screens.length;screens.forEach((sc,x)=>sc.classList.toggle("active",x===current));dots.querySelectorAll(".dot").forEach((d,x)=>d.classList.toggle("active",x===current));if(current===0)animateHomeNumbers();if(current>=1&&current<=4)animateCards(screens[current]);if(current===5){showMotivation();scheduleMotivation();}else clearTimeout(motivationTimer);}
+function replayFinalTiles(){
+  const items=[...document.querySelectorAll(".final-projects .live-project")];
+  items.forEach((el,i)=>{
+    el.style.animation="none";void el.offsetWidth;el.style.animation="";
+    const bar=el.querySelector(".lp-bar i");
+    if(bar){const pct=el.dataset.pct||0;bar.style.width="0%";void bar.offsetWidth;setTimeout(()=>{bar.style.width=pct+"%"},420+i*40);}
+  });
+}
+function show(i){current=(i+screens.length)%screens.length;screens.forEach((sc,x)=>sc.classList.toggle("active",x===current));dots.querySelectorAll(".dot").forEach((d,x)=>d.classList.toggle("active",x===current));if(current===0)animateHomeNumbers();if(current>=1&&current<=4)animateCards(screens[current]);if(current===5){showMotivation();scheduleMotivation();replayFinalTiles();}else clearTimeout(motivationTimer);}
 function scheduleNext(){clearTimeout(loopTimer);loopTimer=setTimeout(()=>{show(current+1);scheduleNext()},durations[current]||25000)}
 function countdownEndFromSettings(){countdownEnd=COUNTDOWN_END_FIXED;}
 function updateCountdown(){countdownEndFromSettings();let x=Math.max(0,countdownEnd-Date.now());document.getElementById("d").textContent=String(Math.floor(x/86400000)).padStart(2,"0");document.getElementById("h").textContent=String(Math.floor(x%86400000/3600000)).padStart(2,"0");document.getElementById("m").textContent=String(Math.floor(x%3600000/60000)).padStart(2,"0");document.getElementById("sec").textContent=String(Math.floor(x%60000/1000)).padStart(2,"0");}
@@ -972,6 +1464,33 @@ syncFromPublishedSheets();
 refreshTimer=setInterval(syncFromPublishedSheets,REFRESH_MS);
 countdownTimer=setInterval(updateCountdown,1000);
 document.addEventListener("keydown",e=>{if(e.key==="ArrowRight"){show(current+1);scheduleNext()}if(e.key==="ArrowLeft"){show(current-1);scheduleNext()}});
+
+
+// V20 — rotate the focus strip through every project automatically.
+let focusProjectIndex=0, focusProjectTimer=null;
+function startFocusProjectRotation(){
+  clearInterval(focusProjectTimer);
+  const tick=()=>{
+    if(!projects.length)return;
+    focusProjectIndex=(focusProjectIndex+1)%projects.length;
+    const p=projects[focusProjectIndex];
+    const name=document.getElementById("finalProjectName"), pct=document.getElementById("finalPct"), bar=document.getElementById("finalFocusProgress");
+    const projectWrap=document.querySelector(".focus-project"), progressWrap=document.querySelector(".focus-progress");
+    if(!name||!pct||!bar)return;
+    projectWrap?.classList.add("swap"); progressWrap?.classList.add("swap");
+    setTimeout(()=>{
+      name.textContent=p?.name||"متابعة مسارات تمكين";
+      const value=toNum(p?.pct);
+      pct.textContent=value+"%";
+      bar.style.width="0%";
+      requestAnimationFrame(()=>requestAnimationFrame(()=>bar.style.width=value+"%"));
+      projectWrap?.classList.remove("swap"); progressWrap?.classList.remove("swap");
+    },320);
+  };
+  focusProjectTimer=setInterval(()=>{if(current===5)tick();},4200);
+}
+startFocusProjectRotation();
+
 </script>
 </body>
 </html>
