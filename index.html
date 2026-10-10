@@ -1152,10 +1152,6 @@
 </div>
 </section>
 
-<section class="screen" id="s1"><div class="top"><div class="brand"><h1>المشاريع</h1><p>PROJECT COMMAND • 01—04</p></div><div class="live"><i></i><span class="sync-label">آخر مزامنة — جارٍ الاتصال</span></div></div><div class="page-head"><div></div><p>01 — 04 / 13</p></div><div class="project-grid" id="p1"></div></section>
-<section class="screen" id="s2"><div class="top"><div class="brand"><h1>المشاريع</h1><p>PROJECT COMMAND • 05—08</p></div><div class="live"><i></i><span class="sync-label">آخر مزامنة — جارٍ الاتصال</span></div></div><div class="page-head"><div></div><p>05 — 08 / 13</p></div><div class="project-grid" id="p2"></div></section>
-<section class="screen" id="s3"><div class="top"><div class="brand"><h1>المشاريع</h1><p>PROJECT COMMAND • 09—12</p></div><div class="live"><i></i><span class="sync-label">آخر مزامنة — جارٍ الاتصال</span></div></div><div class="page-head"><div></div><p>09 — 12 / 13</p></div><div class="project-grid" id="p3"></div></section>
-<section class="screen" id="s4"><div class="top"><div class="brand"><h1>المشاريع</h1><p>PROJECT COMMAND • 13</p></div><div class="live"><i></i><span class="sync-label">آخر مزامنة — جارٍ الاتصال</span></div></div><div class="page-head"><div></div><p>13 / 13</p></div><div class="project-grid" id="p4"></div></section>
 <section class="screen dark final-screen" id="s5">
 <div class="top"><div class="brand"><h1>الوقت المتبقي</h1><p>FINAL COUNTDOWN • TAMKEEN</p></div><div class="live"><i></i><span class="sync-label">آخر مزامنة — جارٍ الاتصال</span></div></div>
 <div class="final-wrap">
@@ -1218,9 +1214,12 @@ let updates=[];
 let dataLoaded=false;
 let countdownEnd=null;
 const stageNames=["Stage 1","Stage 2","Stage 3","Stage 4","Stage 5"];
-const screens=[...document.querySelectorAll(".screen")],dots=document.getElementById("dots");
+let screens=[...document.querySelectorAll(".screen")];const dots=document.getElementById("dots");
 let current=0,updateIndex=0,loopTimer=null,countdownTimer=null,refreshTimer=null;
-const durations=[23000,19000,19000,19000,19000,54000];
+const PER_PAGE=4;
+function isFinal(){return current===screens.length-1}
+function isProjectPage(){return current>=1&&current<=screens.length-2}
+function durationFor(i){return i===0?23000:i===screens.length-1?54000:19000}
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
 function toNum(v){const n=parseFloat(String(v??"").replace(/[^0-9.-]/g,""));return Number.isFinite(n)?Math.max(0,Math.min(100,n)):0;}
@@ -1366,7 +1365,7 @@ async function fetchGviz(sheet){
   return {rows:gvizRows(parseGViz(r.text)),source:r.source};
 }
 
-async function syncFromPublishedSheets(){if(syncInFlight)return;syncInFlight=true;try{const pub=await fetchResource(PUBLISHED_HTML_URL,{allowHtml:true});const gids=discoverGids(pub.text);const [projectTry,updateTry]=await Promise.allSettled([publishedCsv("Projects",gids.Projects),publishedCsv("Updates",gids.Updates)]);if(projectTry.status!=="fulfilled")throw projectTry.reason;const incoming=(projectTry.value.rows||[]).filter(r=>norm(r["Project ID"])).map(mapProject);if(!incoming.length)throw new Error("Projects sheet returned no rows");let updateRows=updateTry.status==="fulfilled"?updateTry.value.rows||[]:[];if(!updateRows.length){try{updateRows=(await fetchGviz("Updates")).rows||[]}catch{}}const sig=JSON.stringify(incoming.map(p=>[p.id,p.name,p.pct,p.status,p.delivery,p.start,p.note,p.team]));projects=incoming;updates=updateRows.filter(r=>norm(r["Update ID"])||norm(r["Project Name"])||norm(r["Update Title"])).map(normalizeUpdate);if(sig!==lastDataSignature){lastDataSignature=sig;renderAll();if(current===0)animateHomeNumbers();}setSheetStatus(true);updateCountdown();}catch(err){console.error("Published Google Sheets sync failed:",err);setSheetStatus(false,err?.message||String(err));renderAll();}finally{syncInFlight=false;}}
+async function syncFromPublishedSheets(){if(syncInFlight)return;syncInFlight=true;try{const pub=await fetchResource(PUBLISHED_HTML_URL,{allowHtml:true});const gids=discoverGids(pub.text);const [projectTry,updateTry]=await Promise.allSettled([publishedCsv("Projects",gids.Projects),publishedCsv("Updates",gids.Updates)]);if(projectTry.status!=="fulfilled")throw projectTry.reason;const incoming=(projectTry.value.rows||[]).filter(r=>norm(r["Project ID"])).map(mapProject);if(!incoming.length)throw new Error("Projects sheet returned no rows");let updateRows=updateTry.status==="fulfilled"?updateTry.value.rows||[]:[];if(!updateRows.length){try{updateRows=(await fetchGviz("Updates")).rows||[]}catch{}}const sig=JSON.stringify(incoming.map(p=>[p.id,p.name,p.pct,p.status,p.delivery,p.start,p.note,p.team]));projects=incoming;updates=updateRows.filter(r=>norm(r["Update ID"])||norm(r["Project Name"])||norm(r["Update Title"])).map(normalizeUpdate);if(sig!==lastDataSignature){lastDataSignature=sig;renderAll();if(current===0)animateHomeNumbers();else if(isProjectPage())animateCards(screens[current]);}setSheetStatus(true);updateCountdown();}catch(err){console.error("Published Google Sheets sync failed:",err);setSheetStatus(false,err?.message||String(err));if(!projects.length)renderAll();}finally{syncInFlight=false;}}
 
 function animateHomeNumbers(){
   document.querySelectorAll(".home-count").forEach((el,i)=>{
@@ -1409,17 +1408,41 @@ function card(p){
  <div class="progress-rail"><i></i></div><div class="card-foot"><div class="info"><small>موعد البداية</small><b>${esc(p.start||"—")}</b></div><div class="info"><small>موعد التسليم</small><b>${esc(p.delivery||"—")}</b></div></div><div class="note">${esc(p.note||"—")}</div></article>`;
 }
 const emptyState=`<div class="empty-state" style="grid-column:1/-1;text-align:center;padding:60px 20px;opacity:.6"><p style="font-size:1.1em">لا توجد بيانات من الشيت بعد</p><p style="font-size:.85em">تحقق من إعدادات النشر على الويب (Publish to web)</p></div>`;
-function renderProjects(){
-  if(!projects.length){
-    ["p1","p2","p3","p4"].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=emptyState;});
-    [1,2,3,4].forEach(n=>{const el=screens[n]?.querySelector(".page-head p");if(el)el.textContent="—";});
-    return;
+function pad2(n){return String(n).padStart(2,"0")}
+function syncProjectScreens(){
+  const need=Math.max(1,Math.ceil(projects.length/PER_PAGE));
+  if(document.querySelectorAll(".project-page").length===need)return;
+  const wasFinal=screens.length>0&&isFinal();
+  const finalEl=document.getElementById("s5");
+  const label=document.querySelector(".sync-label")?.textContent||"آخر مزامنة — جارٍ الاتصال";
+  document.querySelectorAll(".project-page").forEach(e=>e.remove());
+  for(let i=0;i<need;i++){
+    const sec=document.createElement("section");
+    sec.className="screen project-page";sec.id="sp"+i;
+    sec.innerHTML=`<div class="top"><div class="brand"><h1>المشاريع</h1><p class="pp-brand"></p></div><div class="live"><i></i><span class="sync-label">${label}</span></div></div><div class="page-head"><div></div><p class="pp-count"></p></div><div class="project-grid"></div>`;
+    finalEl.before(sec);
   }
-  document.getElementById("p1").innerHTML=projects.slice(0,4).map(card).join("");
-  document.getElementById("p2").innerHTML=projects.slice(4,8).map(card).join("");
-  document.getElementById("p3").innerHTML=projects.slice(8,12).map(card).join("");
-  document.getElementById("p4").innerHTML=projects.slice(12).map(card).join("");
-  [1,2,3,4].forEach((n,i)=>{const el=screens[n]?.querySelector(".page-head p");if(el)el.textContent=`${i*4+1} — ${Math.min((i+1)*4,projects.length)} / ${projects.length}`;});
+  screens=[...document.querySelectorAll(".screen")];
+  if(wasFinal)current=screens.length-1;else if(current>screens.length-1)current=screens.length-1;
+  screens.forEach((sc,x)=>sc.classList.toggle("active",x===current));
+  dots.innerHTML="";initDots();
+  dots.querySelectorAll(".dot").forEach((d,x)=>d.classList.toggle("active",x===current));
+}
+function renderProjects(){
+  const pages=[...document.querySelectorAll(".project-page")];
+  pages.forEach((pg,i)=>{
+    const grid=pg.querySelector(".project-grid"),brand=pg.querySelector(".pp-brand"),count=pg.querySelector(".pp-count");
+    if(!projects.length){
+      if(grid)grid.innerHTML=i===0?emptyState:"";
+      if(brand)brand.textContent="PROJECT COMMAND";
+      if(count)count.textContent="—";
+      return;
+    }
+    const from=i*PER_PAGE,to=Math.min(from+PER_PAGE,projects.length);
+    if(grid)grid.innerHTML=projects.slice(from,to).map(card).join("");
+    if(brand)brand.textContent=`PROJECT COMMAND • ${to-from>1?pad2(from+1)+"—"+pad2(to):pad2(from+1)}`;
+    if(count)count.textContent=`${pad2(from+1)} — ${pad2(to)} / ${projects.length}`;
+  });
 }
 function interpolateColor(p){
   const stops=[[0,[216,163,61]],[40,[130,91,151]],[70,[81,37,102]],[100,[47,149,111]]];
@@ -1434,14 +1457,14 @@ function renderLiveProjects(){
  grid.dataset.signature=html;grid.innerHTML=html;
  requestAnimationFrame(()=>grid.querySelectorAll(".live-project").forEach((x,i)=>{const bar=x.querySelector(".lp-bar i");requestAnimationFrame(()=>{bar.style.width=x.dataset.pct+"%"})}));
 }
-function renderAll(){renderHome();renderProjects();renderLiveProjects();}
+function renderAll(){syncProjectScreens();renderHome();renderProjects();renderLiveProjects();}
 
 function animateCards(screen){
  screen.querySelectorAll(".card").forEach(c=>{c.style.animation="none";void c.offsetWidth;c.style.animation="";});
  screen.querySelectorAll(".card").forEach((c,i)=>{const target=+c.dataset.pct,counter=c.querySelector(".counter"),arc=c.querySelector(".arc"),rail=c.querySelector(".progress-rail i"),numEl=c.querySelector(".num");setTimeout(()=>{if(numEl){const raw=parseInt(numEl.textContent,10)||0,stNum=performance.now();function nf(now){const q=Math.min((now-stNum)/700,1),e=1-Math.pow(1-q,3);numEl.textContent=String(Math.round(raw*e)).padStart(2,"0");if(q<1)requestAnimationFrame(nf)}requestAnimationFrame(nf)}const start=performance.now();function f(now){const q=Math.min((now-start)/2100,1),e=1-Math.pow(1-q,3);counter.textContent=Math.round(target*e)+"%";if(q<1)requestAnimationFrame(f)}requestAnimationFrame(f);setTimeout(()=>{arc.style.strokeDashoffset=408-(408*target/100);rail.style.width=target+"%"},120)},400+i*240)})
 }
 function showMotivation(){const text=document.getElementById("motivationText"),idx=document.getElementById("mIndex"),lab=document.getElementById("motivationLabel");if(!text)return;const next=motivationIndex++%MOTIVATIONS.length;text.classList.add("swap");setTimeout(()=>{text.textContent=MOTIVATIONS[next];idx.textContent=String(next+1).padStart(2,"0");lab.textContent=`رسالة ${String(next+1).padStart(2,"0")}`;text.classList.remove("swap")},280);}
-function scheduleMotivation(){clearTimeout(motivationTimer);if(current!==5)return;motivationTimer=setTimeout(()=>{showMotivation();scheduleMotivation()},6000);}
+function scheduleMotivation(){clearTimeout(motivationTimer);if(!isFinal())return;motivationTimer=setTimeout(()=>{showMotivation();scheduleMotivation()},6000);}
 function replayFinalTiles(){
   const items=[...document.querySelectorAll(".final-projects .live-project")];
   items.forEach((el,i)=>{
@@ -1450,8 +1473,8 @@ function replayFinalTiles(){
     if(bar){const pct=el.dataset.pct||0;bar.style.width="0%";void bar.offsetWidth;setTimeout(()=>{bar.style.width=pct+"%"},420+i*40);}
   });
 }
-function show(i){current=(i+screens.length)%screens.length;screens.forEach((sc,x)=>sc.classList.toggle("active",x===current));dots.querySelectorAll(".dot").forEach((d,x)=>d.classList.toggle("active",x===current));if(current===0)animateHomeNumbers();if(current>=1&&current<=4)animateCards(screens[current]);if(current===5){showMotivation();scheduleMotivation();replayFinalTiles();}else clearTimeout(motivationTimer);}
-function scheduleNext(){clearTimeout(loopTimer);loopTimer=setTimeout(()=>{show(current+1);scheduleNext()},durations[current]||25000)}
+function show(i){current=(i+screens.length)%screens.length;screens.forEach((sc,x)=>sc.classList.toggle("active",x===current));dots.querySelectorAll(".dot").forEach((d,x)=>d.classList.toggle("active",x===current));if(current===0)animateHomeNumbers();if(isProjectPage())animateCards(screens[current]);if(isFinal()){showMotivation();scheduleMotivation();replayFinalTiles();}else clearTimeout(motivationTimer);}
+function scheduleNext(){clearTimeout(loopTimer);loopTimer=setTimeout(()=>{show(current+1);scheduleNext()},durationFor(current)||25000)}
 function countdownEndFromSettings(){countdownEnd=COUNTDOWN_END_FIXED;}
 function updateCountdown(){countdownEndFromSettings();let x=Math.max(0,countdownEnd-Date.now());document.getElementById("d").textContent=String(Math.floor(x/86400000)).padStart(2,"0");document.getElementById("h").textContent=String(Math.floor(x%86400000/3600000)).padStart(2,"0");document.getElementById("m").textContent=String(Math.floor(x%3600000/60000)).padStart(2,"0");document.getElementById("sec").textContent=String(Math.floor(x%60000/1000)).padStart(2,"0");}
 function initDots(){screens.forEach((_,i)=>{const d=document.createElement("span");d.className="dot"+(i===0?" active":"");dots.appendChild(d)})}
@@ -1487,7 +1510,7 @@ function startFocusProjectRotation(){
       projectWrap?.classList.remove("swap"); progressWrap?.classList.remove("swap");
     },320);
   };
-  focusProjectTimer=setInterval(()=>{if(current===5)tick();},4200);
+  focusProjectTimer=setInterval(()=>{if(isFinal())tick();},4200);
 }
 startFocusProjectRotation();
 
